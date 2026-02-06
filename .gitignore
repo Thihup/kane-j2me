@@ -1,1 +1,7 @@
-build
+*.class
+.gradle/
+build/
+out/
+.idea/
+*.log
+*.jfr
