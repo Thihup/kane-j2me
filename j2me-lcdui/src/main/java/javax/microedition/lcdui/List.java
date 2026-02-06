@@ -84,7 +84,53 @@ public class List extends Screen implements Choice {
     }
     
     public void setSelectedIndex(int index, boolean selected) {
-        swingList.setSelectedIndex(index);
+        if (selected) {
+            swingList.setSelectedIndex(index);
+        } else {
+            swingList.removeSelectionInterval(index, index);
+        }
+    }
+
+    public String getString(int elementNum) {
+        return strings.get(elementNum);
+    }
+
+    public Image getImage(int elementNum) {
+        return images.get(elementNum);
+    }
+
+    public void insert(int elementNum, String stringPart, Image imagePart) {
+        strings.insertElementAt(stringPart, elementNum);
+        images.insertElementAt(imagePart, elementNum);
+        swingList.setListData(strings);
+    }
+
+    public void set(int elementNum, String stringPart, Image imagePart) {
+        strings.set(elementNum, stringPart);
+        images.set(elementNum, imagePart);
+        swingList.setListData(strings);
+    }
+
+    public boolean isSelected(int elementNum) {
+        return swingList.isSelectedIndex(elementNum);
+    }
+
+    public int getSelectedFlags(boolean[] selectedArray) {
+        int count = 0;
+        for (int i = 0; i < strings.size() && i < selectedArray.length; i++) {
+            selectedArray[i] = swingList.isSelectedIndex(i);
+            if (selectedArray[i]) count++;
+        }
+        return count;
+    }
+
+    public void setSelectedFlags(boolean[] selectedArray) {
+        swingList.clearSelection();
+        for (int i = 0; i < selectedArray.length && i < strings.size(); i++) {
+            if (selectedArray[i]) {
+                swingList.addSelectionInterval(i, i);
+            }
+        }
     }
 
     @Override

@@ -11,5 +11,15 @@ public interface Choice {
 
     int size();
     int getSelectedIndex();
-    // Other Choice methods would go here...
+    String getString(int elementNum);
+    Image getImage(int elementNum);
+    int append(String stringPart, Image imagePart);
+    void insert(int elementNum, String stringPart, Image imagePart);
+    void delete(int elementNum);
+    void deleteAll();
+    void set(int elementNum, String stringPart, Image imagePart);
+    boolean isSelected(int elementNum);
+    void setSelectedIndex(int elementNum, boolean selected);
+    int getSelectedFlags(boolean[] selectedArray);
+    void setSelectedFlags(boolean[] selectedArray);
 }

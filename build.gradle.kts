@@ -35,6 +35,8 @@ project(":kane-boot") {
         implementation(project(":j2me-media"))
         implementation(project(":j2me-midlet"))
         implementation(project(":j2me-rms"))
+        implementation(project(":j2me-m3g"))
+        implementation(project(":j2me-wma"))
     }
 
 tasks.register<Copy>("copyToLib") {
