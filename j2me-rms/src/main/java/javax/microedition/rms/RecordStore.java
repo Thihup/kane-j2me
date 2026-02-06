@@ -108,15 +108,69 @@ public class RecordStore {
         // In-memory implementation doesn't need to do anything here.
         System.out.println(">>> RMS ["+recordStoreName+"]: closeRecordStore()");
     }
-    
-    // Simple placeholder exceptions, J2ME has more specific ones.
-    public static class RecordStoreException extends Exception {
-        public RecordStoreException(String message) { super(message); }
+
+    public RecordEnumeration enumerateRecords(RecordFilter filter, RecordComparator comparator, boolean keepUpdated) throws RecordStoreNotOpenException {
+        // Simple enumeration implementation ignoring filter/comparator for now
+        return new SimpleRecordEnumeration();
     }
-    public static class RecordStoreNotFoundException extends RecordStoreException {
-        public RecordStoreNotFoundException(String message) { super(message); }
-    }
-    public static class InvalidRecordIDException extends RecordStoreException {
-        public InvalidRecordIDException(String message) { super(message); }
+
+    private class SimpleRecordEnumeration implements RecordEnumeration {
+        private int currentIndex = 1; // 1-based IDs
+
+        @Override
+        public int numRecords() {
+            return records.size() - 1;
+        }
+
+        @Override
+        public byte[] nextRecord() throws RecordStoreException {
+            if (!hasNextElement()) throw new InvalidRecordIDException("No more records");
+            return records.get(currentIndex++);
+        }
+
+        @Override
+        public int nextRecordId() throws RecordStoreException {
+            if (!hasNextElement()) throw new InvalidRecordIDException("No more records");
+            return currentIndex++;
+        }
+
+        @Override
+        public byte[] previousRecord() throws RecordStoreException {
+            if (!hasPreviousElement()) throw new InvalidRecordIDException("No previous records");
+            return records.get(--currentIndex);
+        }
+
+        @Override
+        public int previousRecordId() throws RecordStoreException {
+            if (!hasPreviousElement()) throw new InvalidRecordIDException("No previous records");
+            return --currentIndex;
+        }
+
+        @Override
+        public boolean hasNextElement() {
+            return currentIndex < records.size();
+        }
+
+        @Override
+        public boolean hasPreviousElement() {
+            return currentIndex > 1;
+        }
+
+        @Override
+        public void reset() {
+            currentIndex = 1;
+        }
+
+        @Override
+        public void rebuild() {}
+
+        @Override
+        public void keepUpdated(boolean keepUpdated) {}
+
+        @Override
+        public boolean isKeptUpdated() { return false; }
+
+        @Override
+        public void destroy() {}
     }
 }

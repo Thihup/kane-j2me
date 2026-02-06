@@ -334,6 +334,7 @@ public class Main {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             System.err.println("UNCAUGHT EXCEPTION on thread " + t.getName() + ": " + e.getMessage());
             e.printStackTrace();
+            System.exit(-1);
         });
 
         try {
@@ -343,7 +344,7 @@ public class Main {
             String originalMainClass = findMainMIDlet(jarPath);
             if (originalMainClass == null) {
                 System.err.println("ERROR: Could not find MIDlet-1 entry in JAR manifest.");
-                System.exit(1);
+                System.exit(2);
             }
             System.out.println(">>> EMULATOR: Detected Main MIDlet: " + originalMainClass);
 
@@ -357,12 +358,15 @@ public class Main {
             ModuleLayer bootLayer = ModuleLayer.boot();
             Configuration config = bootLayer.configuration().resolve(gameFinder, ModuleFinder.of(), gameModule);
 
-            ModuleLayer layer = ModuleLayer.defineModulesWithOneLoader(config, List.of(bootLayer), ClassLoader.getSystemClassLoader()).layer();
+            var gameController = ModuleLayer.defineModulesWithOneLoader(config, List.of(bootLayer), ClassLoader.getSystemClassLoader());
+            ModuleLayer layer = gameController.layer();
+            
             Thread.currentThread().setContextClassLoader(layer.findLoader(GAME_MODULE_NAME));
 
             // 4. Instantiate and Launch
             // The class was remapped to GAME_PACKAGE_NAME
             String remappedMainClass = GAME_PACKAGE_NAME + "." + originalMainClass;
+            gameController.addOpens(layer.findModule(GAME_MODULE_NAME).orElseThrow(), GAME_PACKAGE_NAME, Main.class.getModule());
             Class<?> midletClass = Class.forName(remappedMainClass, true, layer.findLoader(GAME_MODULE_NAME));
             
             Object midletInstance = midletClass.getDeclaredConstructor().newInstance();
@@ -371,17 +375,16 @@ public class Main {
             Method startAppMethod = midletClass.getDeclaredMethod("startApp");
             startAppMethod.setAccessible(true);
             
-            try {
-                System.out.println(">>> EMULATOR: Launching startApp()...");
-                startAppMethod.invoke(midletInstance);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            System.out.println(">>> EMULATOR: Launching startApp()...");
+            startAppMethod.invoke(midletInstance);
+
+            try { Thread.sleep(Long.MAX_VALUE); } catch (InterruptedException e) {}
 
         } catch (Exception e) {
             e.printStackTrace();
+            System.exit(3);
         }
 
-        try { Thread.sleep(Long.MAX_VALUE); } catch (InterruptedException e) {}
+        
     }
 }

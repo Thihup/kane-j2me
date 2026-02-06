@@ -10,6 +10,11 @@ public abstract class Canvas extends Displayable {
     // We create a "Panel" bridge to handle the Swing painting
     public final JPanel _swingPanel;
 
+    @Override
+    public javax.swing.JPanel getSwingPanel() {
+        return _swingPanel;
+    }
+
     protected Canvas() {
         super();
         // This inner class listens to the OS repaint requests
@@ -55,7 +60,18 @@ public abstract class Canvas extends Displayable {
             case KeyEvent.VK_ESCAPE: return -7; // SOFT2 (Right soft key, often 'Back')
             case KeyEvent.VK_1: return 49;
             case KeyEvent.VK_2: return 50;
-            // ... add more as needed
+            case KeyEvent.VK_3: return 51;
+            case KeyEvent.VK_4: return 52;
+            case KeyEvent.VK_5: return 53;
+            case KeyEvent.VK_6: return 54;
+            case KeyEvent.VK_7: return 55;
+            case KeyEvent.VK_8: return 56;
+            case KeyEvent.VK_9: return 57;
+            case KeyEvent.VK_0: return 48;
+            case KeyEvent.VK_A: return 9;  // Game A
+            case KeyEvent.VK_S: return 10; // Game B
+            case KeyEvent.VK_D: return 11; // Game C
+            case KeyEvent.VK_F: return 12; // Game D
         }
         return 0;
     }

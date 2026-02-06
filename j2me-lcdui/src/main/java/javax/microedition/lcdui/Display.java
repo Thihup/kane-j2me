@@ -36,12 +36,13 @@ public class Display {
             window.setVisible(true);
         }
 
-        // If this is a Canvas (which we hacked to have a _swingPanel)
-        if (nextDisplayable instanceof Canvas) {
-            Canvas c = (Canvas) nextDisplayable;
-            window.setContentPane(c._swingPanel);
-            c._swingPanel.requestFocus(); // Give it keyboard focus
+        // Use the generalized Swing panel access
+        javax.swing.JPanel panel = nextDisplayable.getSwingPanel();
+        if (panel != null) {
+            window.setContentPane(panel);
+            panel.requestFocus(); // Give it keyboard focus
             window.revalidate();
+            window.repaint();
         }
     }
 

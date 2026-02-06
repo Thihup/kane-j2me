@@ -34,6 +34,11 @@ public abstract class Displayable {
     public int getWidth() { return 240; } 
     public int getHeight() { return 320; }
     
+    // Returns the Swing component used to render this Displayable
+    public javax.swing.JPanel getSwingPanel() {
+        return null;
+    }
+
     // Stub for size change events
     protected void sizeChanged(int w, int h) {}
 }

@@ -101,6 +101,10 @@ public class Graphics {
         target.setClip(x, y, width, height);
     }
 
+    public void clipRect(int x, int y, int width, int height) {
+        target.clipRect(x, y, width, height);
+    }
+
     public int getClipX() { return target.getClipBounds().x; }
     public int getClipY() { return target.getClipBounds().y; }
     public int getClipWidth() { return target.getClipBounds().width; }
