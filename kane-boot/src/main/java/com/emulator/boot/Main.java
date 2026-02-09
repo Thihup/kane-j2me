@@ -356,9 +356,9 @@ public class Main {
             // 3. Setup Module Layer
             ModuleFinder gameFinder = new InMemoryModuleFinder(gameModuleData);
 
-            Set<String> gameModule = Set.of(GAME_MODULE_NAME);
+            Set<String> gameModuleSet = Set.of(GAME_MODULE_NAME);
             ModuleLayer bootLayer = ModuleLayer.boot();
-            Configuration config = bootLayer.configuration().resolve(gameFinder, ModuleFinder.of(), gameModule);
+            Configuration config = bootLayer.configuration().resolve(gameFinder, ModuleFinder.of(), gameModuleSet);
 
             var gameController = ModuleLayer.defineModulesWithOneLoader(config, List.of(bootLayer), ClassLoader.getSystemClassLoader());
             ModuleLayer layer = gameController.layer();
