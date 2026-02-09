@@ -30,6 +30,12 @@ public class RecordStore {
 
     // --- Static Methods ---
 
+    public static String[] listRecordStores() {
+        synchronized (recordStores) {
+            return recordStores.keySet().toArray(new String[0]);
+        }
+    }
+    
     public static RecordStore openRecordStore(String recordStoreName, boolean createIfNecessary) throws RecordStoreException {
         System.out.println(">>> RMS: openRecordStore('" + recordStoreName + "')");
         
@@ -81,6 +87,14 @@ public class RecordStore {
         }
     }
     
+    public int getRecord(int recordId, byte[] buffer, int offset) throws RecordStoreException {
+        byte[] data = getRecord(recordId);
+        if (data == null) return 0;
+        int len = Math.min(data.length, buffer.length - offset);
+        System.arraycopy(data, 0, buffer, offset, len);
+        return len;
+    }
+    
     public void setRecord(int recordId, byte[] newData, int offset, int numBytes) throws RecordStoreException {
         System.out.println(">>> RMS ["+recordStoreName+"]: setRecord(" + recordId + ")");
         synchronized (this) {
@@ -102,6 +116,10 @@ public class RecordStore {
 
     public int getVersion() throws RecordStoreException {
         return version;
+    }
+
+    public int getNextRecordID() throws RecordStoreException {
+        return nextRecordId;
     }
 
     public void closeRecordStore() throws RecordStoreException {

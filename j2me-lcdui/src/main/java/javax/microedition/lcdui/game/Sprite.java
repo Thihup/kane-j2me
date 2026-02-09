@@ -30,6 +30,15 @@ public class Sprite extends Layer {
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
     }
+    
+    public Sprite(Sprite s) {
+        super(s.getX(), s.getY(), s.getWidth(), s.getHeight(), s.isVisible());
+        this.image = s.image;
+        this.frameWidth = s.frameWidth;
+        this.frameHeight = s.frameHeight;
+        this.currentFrame = s.currentFrame;
+        // Copy other state if needed (ref pixel, transform, etc.)
+    }
 
     public void setFrame(int sequenceIndex) {
         this.currentFrame = sequenceIndex;
@@ -37,6 +46,10 @@ public class Sprite extends Layer {
 
     public final int getFrame() {
         return currentFrame;
+    }
+
+    public void setFrameSequence(int[] sequence) {
+        // Stub: In a real implementation we would map sequence indices to frame indices
     }
 
     public void setTransform(int transform) {

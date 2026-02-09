@@ -28,6 +28,7 @@ import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.microedition.lcdui.Image;
 import javax.swing.SwingUtilities;
 
 // Imports for the ClassFile API
@@ -257,11 +258,12 @@ public class Main {
                         (classBuilder, element) -> {
                             if (element instanceof java.lang.classfile.MethodModel method) {
                                 classBuilder.withMethod(method.methodName(), method.methodType(), method.flags().flagsMask(), methodBuilder -> {
-                                    methodBuilder.withCode(codeBuilder -> {
-                                        method.code().ifPresent(code -> {
+                                    method.code().ifPresent(code -> {
+                                        methodBuilder.withCode(codeBuilder -> {
                                             code.forEach(ce -> exitTrapper.accept(codeBuilder, ce));
                                         });
                                     });
+                                    
                                     method.forEach(mElement -> {
                                         if (!(mElement instanceof java.lang.classfile.attribute.CodeAttribute)) {
                                             methodBuilder.with(mElement);
@@ -365,8 +367,10 @@ public class Main {
 
             // 4. Instantiate and Launch
             // The class was remapped to GAME_PACKAGE_NAME
-            String remappedMainClass = GAME_PACKAGE_NAME + "." + originalMainClass;
-            gameController.addOpens(layer.findModule(GAME_MODULE_NAME).orElseThrow(), GAME_PACKAGE_NAME, Main.class.getModule());
+            String remappedMainClass = originalMainClass.contains(".") ? originalMainClass : GAME_PACKAGE_NAME + "." + originalMainClass;
+            Module gameModule = layer.findModule(GAME_MODULE_NAME).orElseThrow();
+            gameController.addOpens(gameModule, GAME_PACKAGE_NAME, Main.class.getModule());
+            Image.gameModule = gameModule;
             Class<?> midletClass = Class.forName(remappedMainClass, true, layer.findLoader(GAME_MODULE_NAME));
             
             Object midletInstance = midletClass.getDeclaredConstructor().newInstance();

@@ -37,6 +37,7 @@ project(":kane-boot") {
         implementation(project(":j2me-rms"))
         implementation(project(":j2me-m3g"))
         implementation(project(":j2me-wma"))
+        implementation(project(":j2me-nokia-ui"))
     }
 
 tasks.register<Copy>("copyToLib") {
@@ -113,6 +114,18 @@ project(":j2me-lcdui") {
 
 
 project(":j2me-media") {
+    dependencies {
+        implementation(project(":j2me-lcdui"))
+    }
+}
+
+project(":j2me-wma") {
+    dependencies {
+        implementation(project(":j2me-io"))
+    }
+}
+
+project(":j2me-nokia-ui") {
     dependencies {
         implementation(project(":j2me-lcdui"))
     }

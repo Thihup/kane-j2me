@@ -116,4 +116,50 @@ public abstract class Canvas extends Displayable {
         if (keyCode == -5) return FIRE;
         return 0;
     }
+    
+    public int getKeyCode(int gameAction) {
+        switch (gameAction) {
+            case UP: return -1;
+            case DOWN: return -2;
+            case LEFT: return -3;
+            case RIGHT: return -4;
+            case FIRE: return -5;
+            default: return 0;
+        }
+    }
+    
+    public boolean isDoubleBuffered() {
+        return true;
+    }
+    
+    public boolean hasPointerEvents() {
+        return true; // We can support mouse/touch if we map it
+    }
+
+    public String getKeyName(int keyCode) {
+        // Return null for standard keys if we want to rely on system defaults, 
+        // or return descriptive strings.
+        switch(keyCode) {
+            case KEY_NUM0: return "0";
+            case 49: return "1";
+            case 50: return "2";
+            case 51: return "3";
+            case 52: return "4";
+            case 53: return "5";
+            case 54: return "6";
+            case 55: return "7";
+            case 56: return "8";
+            case 57: return "9";
+            case 42: return "*";
+            case 35: return "#";
+            case -1: return "UP";
+            case -2: return "DOWN";
+            case -3: return "LEFT";
+            case -4: return "RIGHT";
+            case -5: return "SELECT";
+            case -6: return "SOFT1";
+            case -7: return "SOFT2";
+            default: return "Key " + keyCode;
+        }
+    }
 }

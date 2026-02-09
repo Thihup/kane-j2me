@@ -72,6 +72,10 @@ public class Font {
         return _metrics.charWidth(ch);
     }
     
+    public int charsWidth(char[] ch, int offset, int length) {
+        return _metrics.charsWidth(ch, offset, length);
+    }
+    
     // Internal accessor
     public java.awt.Font _getAwtFont() {
         return _awtFont;

@@ -56,6 +56,22 @@ public class Graphics {
     private int strokeStyle = SOLID;
     public void setStrokeStyle(int style) { this.strokeStyle = style; }
     public int getStrokeStyle() { return strokeStyle; }
+    
+    public int getBlueComponent() {
+        return target.getColor().getBlue();
+    }
+    
+    public int getGreenComponent() {
+        return target.getColor().getGreen();
+    }
+    
+    public int getRedComponent() {
+        return target.getColor().getRed();
+    }
+    
+    public int getColor() {
+        return target.getColor().getRGB() & 0x00FFFFFF; // Mask out alpha
+    }
 
     public void fillRect(int x, int y, int width, int height) {
         target.fillRect(x, y, width, height);

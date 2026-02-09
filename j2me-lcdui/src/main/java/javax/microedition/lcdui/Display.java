@@ -66,4 +66,12 @@ public class Display {
     // Some games check color depth
     public boolean isColor() { return true; }
     public int numColors() { return 65536; }
+    
+    public int numAlphaLevels() {
+        return 256;
+    }
+    
+    public boolean flashBacklight(int duration) {
+        return false; // Not supported
+    }
 }
